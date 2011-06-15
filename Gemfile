@@ -2,13 +2,13 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.8'
 
+gem 'mongrel'
 gem 'capistrano', '2.5.21'
-#gem 'open4',      '0.9.3'
+gem 'compass'
 gem 'open4',      '1.0.1'
 gem 'syntax',     '1.0.0'
 gem 'version_fu'
 gem 'devise'
-gem 'compass'
 gem 'haml'
 
 group :development do
