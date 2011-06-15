@@ -29,6 +29,10 @@ module ApplicationHelper
     end
   end
 
+  def menu_link(text)
+    content_tag(:div, text, :class => 'menu_link_title')
+  end
+
   def web_friendly_text(text)
     return text if text.blank?
     h(text).gsub("\n",'<br />').gsub("\r",'')

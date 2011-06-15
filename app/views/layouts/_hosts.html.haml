@@ -1,0 +1,10 @@
+.open{ :style => show_if_opened(status) }
+  - if Host.count > 0
+    - for host in Host.find(:all, :order => "name ASC")
+      = link_to menu_link(host.name), host_path(host), :class => "menu_link #{active_link_class(host)}", :title => host.name
+  - else
+    .menu_item= t('empty.hosts')
+    = link_to menu_link(t('menu.new_host')), new_host_path, :class => 'menu_link menu_link_create'
+
+.closed{ :style => show_if_closed(status) }
+  .menu_link_title= t('hosts', :count => Host.count)

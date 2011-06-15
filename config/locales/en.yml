@@ -2,4 +2,16 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  company: "Webistrano"
+
+  menu:
+    new_project: New project
+    new_host: New host
+    new_recipe: New recipe
+
+  hosts:
+    one: 1 Host
+    other: "%{count} Hosts"
+
+  empty:
+    hosts: "No host created yet"

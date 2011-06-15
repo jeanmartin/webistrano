@@ -1,0 +1,48 @@
+
+.head_area {
+  @include clearfix;
+  padding:12px;
+}
+
+div.special_box {
+}
+
+div.stages_box{
+  @include min-height(65px);
+}
+
+a.arrow_link {
+  background-position:0 0;
+}
+
+.small_box {
+  h3 {
+    margin:0 0 7px;
+  }
+}
+
+#deploy_comment {
+  margin:12px 29px 0 0;
+}
+
+#deploy_log {
+  display:block;
+  .log_output {
+    width:636px;
+    overflow:hidden;
+    padding:0;
+    pre {
+      overflow: auto;
+      width: 584px;
+      padding:17px 10px 16px 40px;
+      border:1px solid #CCC;
+    }
+  }
+}
+
+.deployment_footer_status {
+  img {
+    position:relative;
+    top:-3px;
+  }
+}
