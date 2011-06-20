@@ -9,6 +9,29 @@ en:
     new_host: New host
     new_recipe: New recipe
 
+  headings:
+    log: Log
+    comment: Comment
+
+  labels:
+    auto_scroll: auto scroll
+    status: "Status:"
+    task: "Task:"
+    stage: "Stage:"
+    deployed_by: "Deployed by:"
+    revision: "Revision:"
+    started: "Started:"
+    completed: "Completed:"
+
+  links:
+    scroll_to_top: Scroll to top
+    cancel: Cancel
+    repeat: Repeat
+
+  questions:
+    kill_deployment:
+      are_you_sure: "Are you sure? Killing this deployment will not cleanup and rollback."
+
   hosts:
     one: 1 Host
     other: "%{count} Hosts"

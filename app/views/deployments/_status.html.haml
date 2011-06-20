@@ -1,0 +1,101 @@
+.head_area
+  .special_box
+    .special_box_top
+    .special_box_middle{ :style => "min-height: 175px; height: 163px;" }
+      %div{ :style => "padding: 7px 50px 0px 50px; *padding: 0px 50px;" }
+        = image_tag('peritor_theme/status_' + @deployment.status + '.gif', :title => @deployment.status)
+        .deployment_status
+          %b= t('labels.status')
+          = @deployment.status
+          - if @deployment.cancelling_possible?
+            &nbsp; &nbsp;
+            = link_to t('links.cancel'), [:cancel, current_project, current_stage, @deployment], :confirm => t('questions.kill_deployment.are_you_sure'), :method => "post", :class => 'arrow_link'
+          - if @deployment.completed?
+            &nbsp; &nbsp;
+            = link_to t('links.repeat'), new_project_stage_deployment_path(current_project, current_stage, :repeat => @deployment.id), :class => 'arrow_link'
+    .special_box_bottom
+
+  .box
+    %dl
+      %dt= t('labels.task')
+      %dd= @deployment.task
+
+      %dt= t('labels.stage')
+      %dd= link_to @deployment.stage.name, [@project, @stage]
+
+      %dt= t('labels.deployed_by')
+      %dd= user_info(@deployment.user) rescue ''
+
+      %dt= t('labels.revision')
+      %dd= @deployment.revision
+
+      %dt= t('labels.started')
+      %dd
+        = @deployment.created_at.to_s(:log)
+        (#{current_user.time_zone rescue 'UTC'})
+
+      %dt= t('labels.completed')
+      %dd= "#{@deployment.completed_at.to_s(:log)} (#{current_user.time_zone})" rescue nil
+
+  %fieldset#deploy_comment.fieldset
+    %legend= t('headings.comment')
+    = web_friendly_text @deployment.description
+
+
+%fieldset#deploy_log.fieldset
+  %legend
+  %div{ :style => "float:right; padding: 0px 10px 10px 0px; *padding: 0px" }
+    %input#auto_scroll_log.noframe{ :type => "checkbox", :checked => @auto_scroll && 'checked' }
+    %label.redtext{ :for => "auto_scroll_log" }
+      %b= t('labels.auto_scroll')
+  .log_output
+    %pre= @deployment.log.gsub('\n', "\n") rescue ''
+
+%br
+
+%table{ :width => "100%" }
+  %tr
+    %td{ :width => "" }
+      = link_to_function t('links.scroll_to_top'), "scroll_to_top()", :class => 'arrow_link'
+      |
+      = link_to 'Back to stage', [@project, @stage], :class => 'arrow_link', :id => 'back_link_at_the_bottom'
+    %td.deployment_footer_status{ :align => "right", :width => "120px" }
+      = image_tag('peritor_theme/status_' + @deployment.status + '_small.gif', :title => @deployment.status, :width => 20, :heigth => 15, :style => 'vertical-align:middle;')
+      %b= t('labels.status')
+      = @deployment.status
+    %td{ :align => "right", :width => "70px" }
+      - if @deployment.completed?
+        &nbsp; &nbsp;
+        = link_to t('links.repeat'), new_project_stage_deployment_path(current_project, current_stage, :repeat => @deployment.id), :class => 'arrow_link'
+      - if @deployment.cancelling_possible?
+        &nbsp; &nbsp;
+        = link_to t('links.cancel'), [:cancel, current_project, current_stage, @deployment], :confirm => t('questions.kill_deployment.are_you_sure'), :method => "post", :class => 'arrow_link'
+
+- unless @deployment.completed?
+  :javascript
+    function update_status(){
+      $.ajax({
+        url:'#{project_stage_deployment_path(@project, @stage, @deployment, :format => 'js')}',
+        type:'get',
+        dataType:'html',
+        data: {
+          random_differentiator: Math.floor(Math.random()*50000), // work around IE caching bug
+          auto_scroll: $('#auto_scroll_log').is(":checked")
+        },
+        success: function(data) {
+          console.log(data);
+          $("#status_info").html(data);
+        }
+      });
+      //new Ajax.Updater('status_info','<%= project_stage_deployment_path(@project, @stage, @deployment) %>.js',{
+      //  method: 'get',
+      //  evalScripts: true,
+      //  parameters: {
+      //    random_differentiator: Math.floor(Math.random()*50000), // work around IE caching bug
+      //    auto_scroll: $('auto_scroll_log').checked
+      //  }
+      //});
+    }
+
+    setTimeout(update_status, 3000);
+    check_auto_scroll_log();
